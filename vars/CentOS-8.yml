@@ -1,0 +1,18 @@
+ipsilon_fas_packages:
+  - ipsilon
+  - ipsilon-authfas
+  - ipsilon-infofas
+  - ipsilon-openid
+  - ipsilon-saml2
+  - ipsilon-openidc
+  - python3-mysql
+
+ipsilon_ipa_packages:
+  - ipsilon
+  - ipsilon-infosssd
+  - ipsilon-tools-ipa
+  - ipsilon-openid
+  - ipsilon-saml2
+  - ipsilon-openidc
+  - python3-mysql
+

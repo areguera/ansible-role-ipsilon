@@ -1,0 +1,20 @@
+- include_role:
+    name: ipa-client
+
+- name: Installing required packages
+  yum:                                                                                                             
+    name: "{{ ipsilon_ipa_packages }}"
+    state: latest
+  tags:
+    - packages
+
+- name: Initializing ipsilon if needed through kinit 
+  shell: "echo {{ ipsilon_ipa_admin_pass }}| kinit {{ ipsilon_ipa_admin }} && ipsilon-server-install --admin-user {{ ipsilon_ipa_admin }} --secure yes --openid yes --openid-extensions 'Teams, Attribute Exchange, Simple Registration' --saml2 yes --openidc yes --openidc-static-dburi mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }}_static --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }} --hostname {{ ipsilon_httpd_hostname }} --secure yes --ipa yes"
+  args:
+    creates: /etc/ipsilon/idp/ipsilon.conf
+  no_log: True
+  register: ipsilon_install
+  tags:
+    - init
+
+    

@@ -10,18 +10,16 @@ ipsilon_db_name: ipsilon
 ipsilon_httpd_tls: True
 ipsilon_httpd_hostname: "{{ inventory_hostname }}"
 
-# ipsilon settings
-ipsilon_packages:
-  - ipsilon
-  - ipsilon-authfas
-  - ipsilon-openid
-  - ipsilon-saml2
-  - ipsilon-openidc
-  - MySQL-python
-  - python-setuptools
-
+# Which Backend to use : FAS or IPA (boolean but pick one)
 # Important to end the fas backend url with /
+ipsilon_fas_auth: True
 ipsilon_fas_backend: https://accounts.dev.centos.org/
 ipsilon_admins:
   - admin
   - arrfab
+
+# IPA variant
+# We need to enroll so you can put credentials (for one shot) and just remove from inventory 
+ipsilon_ipa_auth:  False
+ipsilon_ipa_admin: admin
+ipsilon_ipa_admin_pass: ActiveDirectory

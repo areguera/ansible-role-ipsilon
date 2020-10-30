@@ -1,4 +1,4 @@
-update provider_config set value='Teams, Attribute Exchange, Simple Registration' where name='openid' and option='enabled extensions';
+update provider_config set value='Teams, Attribute Exchange, Simple Registration' where name='openid' and `option`='enabled extensions';
 insert ignore into provider_config values ('openid','default allowed attributes','["*"]');
 insert ignore into provider_config values ('openid','default attribute mapping','[["*", "*"]]');
 insert ignore into provider_config values ('openid','trusted roots','');

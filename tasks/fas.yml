@@ -16,4 +16,19 @@
   tags:
     - init
 
+- name: Importing template for ipsilon DB
+  template:
+    src: ipsilon-db-cfg-fas.sql.j2
+    dest: /etc/ipsilon/idp/ipsilon-db-cfg.sql
+  register: ipsilon_db_cfg 
+
+- name: Configuring ipsilon DB from template
+  mysql_db:
+    name: "{{ ipsilon_db_name }}"
+    state: import
+    target: /etc/ipsilon/idp/ipsilon-db-cfg.sql
+  when: ipsilon_db_cfg is changed
+  tags:
+    - init
+
   

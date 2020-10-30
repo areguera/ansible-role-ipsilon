@@ -23,3 +23,8 @@ ipsilon_admins:
 ipsilon_ipa_auth:  False
 ipsilon_ipa_admin: admin
 ipsilon_ipa_admin_pass: ActiveDirectory
+
+# OpenID section
+# Which trusted roots we allow by default without warning
+ipsilon_openid_trusted_roots:
+  - https://git.centos.org

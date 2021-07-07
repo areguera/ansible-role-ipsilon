@@ -12,17 +12,21 @@ ipsilon_httpd_hostname: "{{ inventory_hostname }}"
 
 # Which Backend to use : FAS or IPA (boolean but pick one)
 # Important to end the fas backend url with /
-ipsilon_fas_auth: True
+ipsilon_fas_auth: False
 ipsilon_fas_backend: https://accounts.dev.centos.org/
+
+# IPA variant, now the default
+# We need to enroll so you can put credentials (for one shot) and just remove from inventory 
+ipsilon_ipa_auth:  True
+ipsilon_ipa_admin: admin
+ipsilon_ipa_admin_pass: ActiveDirectory
+# Full path to the ipa host/MasterCRL.bin CRL cert
+ipsilon_ipa_crl_path: http://ipa.stg.fedoraproject.org/ipa/crl/MasterCRL.bin
+
+# List of login names that will be granted automatically admins rights in ipsilon
 ipsilon_admins:
   - admin
   - arrfab
-
-# IPA variant
-# We need to enroll so you can put credentials (for one shot) and just remove from inventory 
-ipsilon_ipa_auth:  False
-ipsilon_ipa_admin: admin
-ipsilon_ipa_admin_pass: ActiveDirectory
 
 # OpenID section
 # Which trusted roots we allow by default without warning

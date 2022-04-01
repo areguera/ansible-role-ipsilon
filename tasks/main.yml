@@ -78,6 +78,8 @@
     mode: 0644
   notify:
     - restart_httpd
+  tags:
+    - httpd
 
 - name: Configuring https
   template:
@@ -89,7 +91,9 @@
   with_items:
     - ssl-ipsilon-vhost.conf
   when: ipsilon_httpd_tls  
-   
+  tags:
+    - httpd
+
 - import_role:
     name: httpd
     tasks_from: pki-tls

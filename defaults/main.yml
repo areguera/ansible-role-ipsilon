@@ -10,6 +10,17 @@ ipsilon_db_name: ipsilon
 ipsilon_httpd_tls: True
 ipsilon_httpd_hostname: "{{ inventory_hostname }}"
 
+# httpd RewriteRules block
+# By default our vhost will already redirect to /idp (ipsilon)
+# but we can (if defined) inject a block for other rules
+# example:
+# ipsilon_httpd_rewriterules: |
+#   # Injected rules from ipsilon_httpd_rewriterules ansible block
+#   RewriteCond $1 ^gitlab
+#   RewriteRule ^/?(.*) https://gitlab.com [R,L]
+#    
+
+
 # Which Backend to use : FAS or IPA (boolean but pick one)
 # Important to end the fas backend url with /
 ipsilon_fas_auth: False

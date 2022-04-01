@@ -1,17 +1,17 @@
 # Defaults tasks for role ipsilon
 - name: Importing specific distro variables
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_distribution }}.yml"
 
-- include_role:
+- ansible.builtin.include_role:
     name: mysql
   tags:
     - db
 
 - name: Creating mandatory (local) DB 
-  include_role: 
+  ansible.builtin.include_role: 
     name: mysql
     tasks_from: db
   vars:
@@ -26,28 +26,28 @@
 
 - block:
     - name: Enabling EPEL for .el8 deps
-      yum:
+      ansible.builtin.yum:
         name: epel-release
         state: installed
     # FIXME : waiting for ipsilon to be available but blocked by https://bugzilla.redhat.com/show_bug.cgi?id=1888195    
     - name: Workaround for ipsilon/lasso pkgs
-      command: dnf copr enable -y arrfab/noggin
+      ansible.builtin.command: dnf copr enable -y arrfab/noggin
         
   when: ansible_distribution_major_version == '8'
   tags:
     - test
 
-- include_tasks: ipa.yml
+- ansible.builtin.include_tasks: ipa.yml
   when: ipsilon_ipa_auth
   tags:
     - ipa
     - init
 
-- include_tasks: fas.yml
+- ansible.builtin.include_tasks: fas.yml
   when: ipsilon_fas_auth
   
 - name: Ipsilon admins template
-  template:
+  ansible.builtin.template:
     src: ipsilon-admins.sql.j2
     dest: /etc/ipsilon/idp/ipsilon-admins.sql
   register: ipsilon_admins 
@@ -66,13 +66,13 @@
     - admins
 
 - name: Configuring httpd
-  import_role:
+  ansible.builtin.import_role:
     name: httpd
   vars:
     httpd_tls: "{{ ipsilon_httpd_tls }}"
 
 - name: Configuring httpd vhost
-  template:
+  ansible.builtin.template:
     src: 02_ipsilon_vhost.conf.j2
     dest: /etc/httpd/conf.d/02_ipsilon_vhost.conf
     mode: 0644
@@ -82,7 +82,7 @@
     - httpd
 
 - name: Configuring https
-  template:
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "/etc/httpd/conf.d/{{ item }}"
     mode: 0644
@@ -94,7 +94,7 @@
   tags:
     - httpd
 
-- import_role:
+- ansible.builtin.import_role:
     name: httpd
     tasks_from: pki-tls
   vars:
@@ -121,7 +121,7 @@
     mode: 0755
 
 - name: Ensuring backup user and jobs
-  include_role:
+  ansible.builtin.include_role:
     name: centos-backup
     tasks_from: client
   vars:

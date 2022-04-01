@@ -1,15 +1,15 @@
-- include_role:
+- ansible.builtin.include_role:
     name: ipa-client
 
 - name: Installing required packages
-  yum:                                                                                                             
+  ansible.builtin.yum: 
     name: "{{ ipsilon_ipa_packages }}"
     state: latest
   tags:
     - packages
 
 - name: Initializing ipsilon if needed through kinit 
-  shell: "echo {{ ipsilon_ipa_admin_pass }}| kinit {{ ipsilon_ipa_admin }} && ipsilon-server-install --admin-user {{ ipsilon_ipa_admin }} --secure yes --openid yes --openid-extensions 'Teams, Attribute Exchange, Simple Registration' --saml2 yes --openidc yes --openidc-static-dburi mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }}_static --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }} --hostname {{ ipsilon_httpd_hostname }} --secure yes --ipa yes"
+  ansible.builtin.shell: "echo {{ ipsilon_ipa_admin_pass }}| kinit {{ ipsilon_ipa_admin }} && ipsilon-server-install --admin-user {{ ipsilon_ipa_admin }} --secure yes --openid yes --openid-extensions 'Teams, Attribute Exchange, Simple Registration' --saml2 yes --openidc yes --openidc-static-dburi mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }}_static --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }} --hostname {{ ipsilon_httpd_hostname }} --secure yes --ipa yes"
   args:
     creates: /etc/ipsilon/idp/ipsilon.conf
   no_log: True
@@ -18,7 +18,7 @@
     - init
 
 - name: Importing template for ipsilon DB
-  template:
+  ansible.builtin.template:
     src: ipsilon-db-cfg-ipa.sql.j2
     dest: /etc/ipsilon/idp/ipsilon-db-cfg.sql
   register: ipsilon_db_cfg
@@ -33,7 +33,7 @@
     - init
 
 - name: configure SSSd to forward additional attributes (1/2)
-  replace:
+  ansible.builtin.replace:
     path: /etc/sssd/sssd.conf
     regexp: ^ldap_user_extra_attrs = [\w,\s]+$
     replace: ldap_user_extra_attrs = mail, street, locality, st, postalCode, telephoneNumber, givenname, sn, fasTimeZone, fasLocale, fasIRCNick, fasGPGKeyId, fasCreationTime, fasStatusNote, fasRHBZEmail, fasGitHubUsername, fasGitLabUsername, fasWebsiteURL, fasIsPrivate, ipaSshPubKey
@@ -43,7 +43,7 @@
     - sssd
 
 - name: configure SSSd to forward additional attributes (2/2)
-  replace:
+  ansible.builtin.replace:
     path: /etc/sssd/sssd.conf
     regexp: ^user_attributes = [\w,\s+]+$
     replace: user_attributes = +mail, +street, +locality, +st, +postalCode, +telephoneNumber, +givenname, +sn, +fasTimeZone, +fasLocale, +fasIRCNick, +fasGPGKeyId, +fasCreationTime, +fasStatusNote, +fasRHBZEmail, +fasGitHubUsername, +fasGitLabUsername, +fasWebsiteURL, +fasIsPrivate, +ipaSshPubKey

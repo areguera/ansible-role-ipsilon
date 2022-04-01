@@ -1,14 +1,14 @@
 # Included tasks for FAS deployments (legacy)
 
 - name: Installing required packages
-  yum:                                                                                                             
+  ansible.builtin.yum:
     name: "{{ ipsilon_fas_packages }}"
     state: latest
   tags:
     - packages
 
 - name: Initializing ipsilon if needed
-  command: "ipsilon-server-install --admin-user admin --secure yes --openid yes --saml2 yes --openidc no --fas yes --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/ipsilon --hostname {{ ipsilon_httpd_hostname }}"
+  ansible.builtin.command: "ipsilon-server-install --admin-user admin --secure yes --openid yes --saml2 yes --openidc no --fas yes --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/ipsilon --hostname {{ ipsilon_httpd_hostname }}"
   args:
     creates: /etc/ipsilon/idp/ipsilon.conf
   no_log: True
@@ -17,7 +17,7 @@
     - init
 
 - name: Importing template for ipsilon DB
-  template:
+  ansible.builtin.template:
     src: ipsilon-db-cfg-fas.sql.j2
     dest: /etc/ipsilon/idp/ipsilon-db-cfg.sql
   register: ipsilon_db_cfg 

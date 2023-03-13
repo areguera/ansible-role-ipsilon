@@ -24,18 +24,12 @@
   tags:
     - db
 
-- block:
-    - name: Enabling EPEL for .el8 deps
-      ansible.builtin.yum:
-        name: epel-release
-        state: installed
-    # FIXME : waiting for ipsilon to be available but blocked by https://bugzilla.redhat.com/show_bug.cgi?id=1888195    
-    - name: Workaround for ipsilon/lasso pkgs
-      ansible.builtin.command: dnf copr enable -y arrfab/noggin
-        
-  when: ansible_distribution_major_version == '8'
+- name: Needed .repo template for ipsilon pkgs
+  ansible.builtin.template:
+    src: centos-auth-ipsilon.repo.j2
+    dest: /etc/yum.repos.d/centos-auth-ipsilon.repo
   tags:
-    - test
+    - repo
 
 - ansible.builtin.include_tasks: ipa.yml
   when: ipsilon_ipa_auth

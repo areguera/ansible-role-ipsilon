@@ -114,6 +114,15 @@
     dest: /var/lib/ipsilon/idp/genkey.py
     mode: 0755
 
+- name: Cleaning-up old sessions files
+  cron:
+    name: ipsilon session clean-up
+    job: "find /var/lib/ipsilon/idp/sessions/ -mmin +1440 -delete"
+    hour: '*'
+    minute: '5'
+  tags:
+    - cron
+
 - name: Ensuring backup user and jobs
   ansible.builtin.include_role:
     name: centos-backup

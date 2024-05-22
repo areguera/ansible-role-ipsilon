@@ -123,6 +123,14 @@
   tags:
     - cron
 
+- name: DB maintenance tasks 
+  ansible.builtin.template:
+    src: ipsilon-db-cleanup.j2 
+    dest: /etc/cron.hourly/ipsilon-db-cleanup
+    mode: '0755'
+  tags:
+    - db-tasks
+
 - name: Ensuring backup user and jobs
   ansible.builtin.include_role:
     name: centos-backup

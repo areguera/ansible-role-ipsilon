@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "delete from transactions where uuid in ( select uuid from ( select uuid from transactions where name='expiration_time' and value < UNIX_TIMESTAMP() ) x ) ; " | mysql {{ ipsilon_db_name }}
+

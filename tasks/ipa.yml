@@ -8,8 +8,19 @@
   tags:
     - packages
 
-- name: Initializing ipsilon if needed through kinit 
-  ansible.builtin.shell: "echo {{ ipsilon_ipa_admin_pass }}| kinit {{ ipsilon_ipa_admin }} && ipsilon-server-install --admin-user {{ ipsilon_ipa_admin }} --secure yes --openid yes --openid-extensions 'Teams, Attribute Exchange, Simple Registration' --saml2 yes --openidc yes --openidc-static-dburi mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }}_static --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }} --hostname {{ ipsilon_httpd_hostname }} --secure yes --ipa yes"
+- name: Initializing ipsilon
+  ansible.builtin.shell: 
+    cmd: "kinit -kt /etc/krb5.keytab && ipsilon-server-install 
+         --openid yes 
+         --openid-extensions 'Teams, Attribute Exchange, Simple Registration' 
+         --saml2 yes 
+         --openidc yes 
+         --openidc-static-dburi mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }}_static 
+         --database-url mysql://{{ ipsilon_db_user }}:{{ ipsilon_db_pass }}@localhost/{{ ipsilon_db_name }} 
+         --hostname {{ ipsilon_httpd_hostname }} 
+         --secure yes
+         --gssapi yes
+         --ipa auto"
   args:
     creates: /etc/ipsilon/idp/ipsilon.conf
   no_log: True

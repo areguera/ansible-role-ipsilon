@@ -1,19 +1,19 @@
 {% if centos_infra_env == 'prod' %}
 [centos-auth-ipsilon]
-name=CentOS Infra Prod - el{{ansible_distribution_major_version }}
+name=CentOS Ipsilon Prod - el{{ansible_distribution_major_version }}
 baseurl=http://mirror.stream.centos.org/SIGs/$releasever/infra/$basearch/auth-ipsilon/
 enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Infra
 {% elif centos_infra_env == 'stg' %}
 [centos-auth-ipsilon]
-name=CentOS Infra Staging - el{{ansible_distribution_major_version }}
+name=CentOS Ipsilon Staging - el{{ansible_distribution_major_version }}
 baseurl=https://buildlogs.centos.org/centos/$releasever/infra/$basearch/auth-ipsilon/
 enabled=1
 gpgcheck=0
 {% else %}
 [centos-auth-ipsilon]
-name=CentOS Infra dev - el{{ansible_distribution_major_version }}
+name=CentOS Ipsilon dev - el{{ansible_distribution_major_version }}
 baseurl=https://repo.dev.centos.org/$releasever/infra/auth-ipsilon/$basearch/
 enabled=1
 gpgcheck=0

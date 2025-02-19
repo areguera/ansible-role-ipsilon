@@ -1,0 +1,13 @@
+# empty as FAS doesn't exist anymore and clearly not supported for el9 workload
+ipsilon_fas_packages: []
+
+ipsilon_ipa_packages:
+  - ipsilon
+  - ipsilon-infosssd
+  - ipsilon-tools-ipa
+  - ipsilon-openid
+  - ipsilon-saml2
+  - ipsilon-authpam
+  - ipsilon-openidc
+  - python3-mysqlclient
+

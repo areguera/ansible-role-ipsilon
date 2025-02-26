@@ -17,10 +17,18 @@
   vars:
     mysql_db_user: "{{ ipsilon_db_user }}"
     mysql_db_pass: "{{ ipsilon_db_pass }}"
-    mysql_db_name: "{{ item }}"
-  with_items:
-    - "{{ ipsilon_db_name }}"
-    - "{{ ipsilon_db_name }}_static"
+    mysql_db_name: "{{ ipsilon_db_name }}"
+  tags:
+    - db
+
+- name: Creating mandatory static (local) DB
+  ansible.builtin.include_role:
+    name: mysql
+    tasks_from: db
+  vars:
+    mysql_db_user: "{{ ipsilon_db_user }}"
+    mysql_db_pass: "{{ ipsilon_db_pass }}"
+    mysql_db_name: "{{ ipsilon_db_name }}_static"
   tags:
     - db
 
@@ -102,9 +110,9 @@
 - ansible.builtin.include_tasks:
     file: ui.yml
     apply:
-      tags: ui
+      tags: theme
   tags:
-    - ui
+    - theme
 
 - name: Distributing openidc genkey script
   copy:

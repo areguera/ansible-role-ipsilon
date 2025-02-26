@@ -10,8 +10,8 @@
   tags:
     - db
 
-- name: Creating mandatory (local) DB 
-  ansible.builtin.include_role: 
+- name: Creating mandatory (local) DB
+  ansible.builtin.include_role:
     name: mysql
     tasks_from: db
   vars:
@@ -39,12 +39,12 @@
 
 - ansible.builtin.include_tasks: fas.yml
   when: ipsilon_fas_auth
-  
+
 - name: Ipsilon admins template
   ansible.builtin.template:
     src: ipsilon-admins.sql.j2
     dest: /etc/ipsilon/idp/ipsilon-admins.sql
-  register: ipsilon_admins 
+  register: ipsilon_admins
   tags:
     - init
     - admins
@@ -84,7 +84,7 @@
     - restart_httpd
   with_items:
     - ssl-ipsilon-vhost.conf
-  when: ipsilon_httpd_tls  
+  when: ipsilon_httpd_tls
   tags:
     - httpd
 
@@ -99,14 +99,12 @@
     - tls
   when: ipsilon_httpd_tls
 
-- name: Branding ipsilon with logo
-  copy:
-    src: centos_logo.png
-    dest: "{{ item }}"
-    mode: 0644
-  with_items:
-    - /usr/share/ipsilon/ui/img/brand-lg.png
-    - /usr/share/ipsilon/ui/img/brand.png
+- ansible.builtin.include_tasks:
+    file: ui.yml
+    apply:
+      tags: ui
+  tags:
+    - ui
 
 - name: Distributing openidc genkey script
   copy:
@@ -123,9 +121,9 @@
   tags:
     - cron
 
-- name: DB maintenance tasks 
+- name: DB maintenance tasks
   ansible.builtin.template:
-    src: ipsilon-db-cleanup.j2 
+    src: ipsilon-db-cleanup.j2
     dest: /etc/cron.hourly/ipsilon-db-cleanup
     mode: '0755'
   tags:
@@ -138,6 +136,6 @@
   vars:
     - centos_role: ipsilon
     - role_backup_folders:
-        - /var/lib/ipsilon 
+        - /var/lib/ipsilon
   tags:
     - backup

@@ -1,0 +1,45 @@
+---
+- name: Install theme image files
+  copy:
+    src: "files/ui/img/{{ item }}"
+    dest: "/usr/share/ipsilon/ui/img/{{ item }}"
+    mode: 0644
+  with_items:
+    - bg-login.png
+    - brand-lg.png
+    - brand.png
+    - logo.svg
+
+- name: Install theme style files
+  copy:
+    src: "files/ui/css/{{ item }}"
+    dest: "/usr/share/ipsilon/ui/css/{{ item }}"
+    mode: 0644
+  with_items:
+    - admin.css
+    - ipsilon.css
+    - patternfly.css
+    - styles.css
+
+- name: Install theme font files
+  copy:
+    src: "files/ui/fonts-local/{{ item }}"
+    dest: "/usr/share/ipsilon/ui/fonts-local/{{ item }}"
+    mode: 0644
+  with_items:
+    - Montserrat-Bold.woff
+    - Montserrat-Bold.woff2
+    - Montserrat-BoldItalic.woff
+    - Montserrat-BoldItalic.woff2
+    - Montserrat-Italic.woff
+    - Montserrat-Italic.woff2
+    - Montserrat-Medium.woff
+    - Montserrat-Medium.woff2
+    - Montserrat-MediumItalic.woff
+    - Montserrat-MediumItalic.woff2
+    - Montserrat-Regular.woff
+    - Montserrat-Regular.woff2
+    - Montserrat-SemiBold.woff
+    - Montserrat-SemiBold.woff2
+    - Montserrat-SemiBoldItalic.woff
+    - Montserrat-SemiBoldItalic.woff2
